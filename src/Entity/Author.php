@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
@@ -30,9 +32,11 @@ class Author
     private ?int $id = null;
 
     #[ORM\Column(length: 20)]
+    #[ApiFilter(SearchFilter::class, strategy:'partial')]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 20)]
+    #[ApiFilter(SearchFilter::class, strategy:'partial')]
     private ?string $lastName = null;
 
     #[ORM\Column(length: 200)]

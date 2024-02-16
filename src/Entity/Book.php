@@ -2,6 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
@@ -23,6 +26,7 @@ use Doctrine\ORM\Mapping as ORM;
         new Delete()
     ]
 )]
+##[ApiFilter(BooleanFilter::class, properties: ['title'])]
 class Book
 {
     #[ORM\Id]
@@ -31,6 +35,7 @@ class Book
     private ?int $id = null;
 
     #[ORM\Column(length: 20)]
+    #[ApiFilter(SearchFilter::class, strategy:'partial')]
     private ?string $title = null;
 
     #[ORM\Column(length: 200)]
@@ -40,6 +45,7 @@ class Book
     private ?\DateTimeInterface $publicationDate = null;
 
     #[ORM\Column(length: 20)]
+    #[ApiFilter(SearchFilter::class, strategy:'partial')]
     private ?string $genre = null;
 
     public function getId(): ?int
