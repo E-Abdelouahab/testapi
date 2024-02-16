@@ -21,6 +21,7 @@ use Doctrine\ORM\Mapping as ORM;
         new Put(),
         new Delete()
     ]
+    
 )]
 class Review
 {
