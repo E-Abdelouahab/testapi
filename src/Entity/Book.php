@@ -12,6 +12,8 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Repository\BookRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -47,6 +49,18 @@ class Book
     #[ORM\Column(length: 20)]
     #[ApiFilter(SearchFilter::class, strategy:'partial')]
     private ?string $genre = null;
+
+    #[ORM\ManyToOne(inversedBy: 'book')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Author $author = null;
+
+    #[ORM\OneToMany(targetEntity: review::class, mappedBy: 'book')]
+    private Collection $review;
+
+    public function __construct()
+    {
+        $this->review = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -97,6 +111,48 @@ class Book
     public function setGenre(string $genre): static
     {
         $this->genre = $genre;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?Author
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?Author $author): static
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, review>
+     */
+    public function getReview(): Collection
+    {
+        return $this->review;
+    }
+
+    public function addReview(review $review): static
+    {
+        if (!$this->review->contains($review)) {
+            $this->review->add($review);
+            $review->setBook($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReview(review $review): static
+    {
+        if ($this->review->removeElement($review)) {
+            // set the owning side to null (unless already changed)
+            if ($review->getBook() === $this) {
+                $review->setBook(null);
+            }
+        }
 
         return $this;
     }
