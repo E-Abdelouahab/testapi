@@ -42,7 +42,7 @@ class Review
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\ManyToOne(inversedBy: 'review')]
+    #[ORM\ManyToOne(inversedBy: 'Review')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Book $book = null;
 

@@ -50,16 +50,16 @@ class Book
     #[ApiFilter(SearchFilter::class, strategy:'partial')]
     private ?string $genre = null;
 
-    #[ORM\ManyToOne(inversedBy: 'book')]
+    #[ORM\ManyToOne(inversedBy: 'Book')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Author $author = null;
 
-    #[ORM\OneToMany(targetEntity: review::class, mappedBy: 'book')]
-    private Collection $review;
+    #[ORM\OneToMany(targetEntity: Review::class, mappedBy: 'book')]
+    private Collection $Review;
 
     public function __construct()
     {
-        $this->review = new ArrayCollection();
+        $this->Review = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -128,26 +128,26 @@ class Book
     }
 
     /**
-     * @return Collection<int, review>
+     * @return Collection<int, Review>
      */
     public function getReview(): Collection
     {
-        return $this->review;
+        return $this->Review;
     }
 
-    public function addReview(review $review): static
+    public function addReview(Review $review): static
     {
-        if (!$this->review->contains($review)) {
-            $this->review->add($review);
+        if (!$this->Review->contains($review)) {
+            $this->Review->add($review);
             $review->setBook($this);
         }
 
         return $this;
     }
 
-    public function removeReview(review $review): static
+    public function removeReview(Review $review): static
     {
-        if ($this->review->removeElement($review)) {
+        if ($this->Review->removeElement($review)) {
             // set the owning side to null (unless already changed)
             if ($review->getBook() === $this) {
                 $review->setBook(null);

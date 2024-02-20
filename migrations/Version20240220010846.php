@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240219215024 extends AbstractMigration
+final class Version20240220010846 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -23,6 +23,9 @@ final class Version20240219215024 extends AbstractMigration
         $this->addSql('ALTER TABLE book ADD author_id INT NOT NULL');
         $this->addSql('ALTER TABLE book ADD CONSTRAINT FK_CBE5A331F675F31B FOREIGN KEY (author_id) REFERENCES author (id)');
         $this->addSql('CREATE INDEX IDX_CBE5A331F675F31B ON book (author_id)');
+        $this->addSql('ALTER TABLE review ADD book_id INT NOT NULL');
+        $this->addSql('ALTER TABLE review ADD CONSTRAINT FK_794381C616A2B381 FOREIGN KEY (book_id) REFERENCES book (id)');
+        $this->addSql('CREATE INDEX IDX_794381C616A2B381 ON review (book_id)');
     }
 
     public function down(Schema $schema): void
@@ -31,5 +34,8 @@ final class Version20240219215024 extends AbstractMigration
         $this->addSql('ALTER TABLE book DROP FOREIGN KEY FK_CBE5A331F675F31B');
         $this->addSql('DROP INDEX IDX_CBE5A331F675F31B ON book');
         $this->addSql('ALTER TABLE book DROP author_id');
+        $this->addSql('ALTER TABLE review DROP FOREIGN KEY FK_794381C616A2B381');
+        $this->addSql('DROP INDEX IDX_794381C616A2B381 ON review');
+        $this->addSql('ALTER TABLE review DROP book_id');
     }
 }
